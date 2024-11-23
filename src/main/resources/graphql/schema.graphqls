@@ -3,11 +3,18 @@ enum TypeCompte {
     EPARGNE
 }
 
+enum TypeTransaction {
+    DEPOT
+    RETRAIT
+}
+
 type Query {
     allComptes: [Compte]
     compteById(id: ID): Compte
     compteByType(type: TypeCompte): [Compte]
     totalSolde: SoldeStats
+    compteTransactions(id: ID): [Transaction]
+    transactionStats: TransactionStats
 }
 
 type Compte {
@@ -18,8 +25,30 @@ type Compte {
 }
 
 type Mutation {
+    addTransaction(transactionRequest: TransactionRequest): Transaction
     saveCompte (compte: CompteRequest): Compte
     deleteById(id: ID): Compte
+}
+
+type TransactionStats {
+    count: Int
+    sumDepots: Float
+    sumRetraits: Float
+}
+
+type Transaction {
+    id: ID
+    montant: Float
+    date: String
+    type: TypeTransaction
+    compte: Compte
+}
+
+input TransactionRequest {
+    compteId: ID
+    montant: Float
+    date: String
+    type: TypeTransaction
 }
 
 input CompteRequest {

@@ -35,17 +35,6 @@ public class CompteControllerGraphQL {
         return compteRepository.findByType(type);
     }
 
-    @MutationMapping
-    public Transaction addTransaction(@Argument Transaction transactionRequest) {
-        Compte compte = compteRepository.findById(transactionRequest.getCompte().getId()).orElseThrow(() -> new RuntimeException("Compte not found"));
-        Transaction transaction = new Transaction();
-        transaction.setMontant(transactionRequest.getMontant());
-        transaction.setDate(transactionRequest.getDate());
-        transaction.setType(transactionRequest.getType());
-        transaction.setCompte(compte);
-        transactionRepository.save(transaction);
-        return transaction;
-    }
 
     @QueryMapping
     public void deleteById(@Argument Long id){
